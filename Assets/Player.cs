@@ -140,7 +140,7 @@ public class Player : MonoBehaviour {
                     state = State.RUNNING;
                 }
 
-                if (Input.GetKeyDown(KeyCode.Z))
+                if (Input.GetButtonDown("Jump"))
                 {
                     if (_controller.isGrounded)
                     {
@@ -186,7 +186,7 @@ public class Player : MonoBehaviour {
                     _velocity.x = 0;
                 }
 
-                if (Input.GetButton("Dash"))
+                if (Input.GetButtonDown("Dash"))
                 {
                     state = State.DASHING;
                     StartDash();

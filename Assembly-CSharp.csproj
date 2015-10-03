@@ -52,6 +52,7 @@
      <Compile Include="Assets\ExtensionMethods.cs" />
      <Compile Include="Assets\FPSDisplay.cs" />
      <Compile Include="Assets\IAbsorbable.cs" />
+     <Compile Include="Assets\IDamageable.cs" />
      <Compile Include="Assets\IHealth.cs" />
      <Compile Include="Assets\IKillable.cs" />
      <Compile Include="Assets\IdleState.cs" />
