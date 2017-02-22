@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperAcronaut.CSharp", "SuperAcronaut.CSharp.csproj", "{030A4330-D1AF-AA84-943B-96C2517CEE01}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperAcronaut", "SuperAcronaut.csproj", "{01F103F9-DEFA-EE98-CDC9-795E1E51C5AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{030A4330-D1AF-AA84-943B-96C2517CEE01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{030A4330-D1AF-AA84-943B-96C2517CEE01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{030A4330-D1AF-AA84-943B-96C2517CEE01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{030A4330-D1AF-AA84-943B-96C2517CEE01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01F103F9-DEFA-EE98-CDC9-795E1E51C5AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01F103F9-DEFA-EE98-CDC9-795E1E51C5AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01F103F9-DEFA-EE98-CDC9-795E1E51C5AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01F103F9-DEFA-EE98-CDC9-795E1E51C5AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
