@@ -20,11 +20,16 @@ public class Afterimages : MonoBehaviour {
     // The color of the afterimages
     public Color imageColor = Color.red;
 
+    public bool saveSprites = false;
+
     // How much of a delay should there be between afterimages? 1 for least amount of delay.
     public int delayBetweenImages = 1;
 
     // How many past positions to save. Adjust based on performance. I don't recommend changing this at runtime.
     public int positionsToSave = 100;
+
+    public bool useMulticolors = false;
+    public Color[] multicolors = {Color.red, Color.red, Color.red};
     #endregion
 
     #region Private members
@@ -34,6 +39,7 @@ public class Afterimages : MonoBehaviour {
     private ImageState state;
     private GameObject afterImage;
     private Vector3[] imagePositions;
+    private Sprite[] savedSprites;
     private int index = 0;
     private int imagesInPlay = 0;
     private List<Transform> images;
@@ -45,7 +51,10 @@ public class Afterimages : MonoBehaviour {
 
     // Use this for initialization
 	void Start () {
+        Application.targetFrameRate = 60;
+
         imagePositions = new Vector3[positionsToSave];
+        savedSprites = new Sprite[positionsToSave];
         images = new List<Transform>(imagesToDisplay);
         sprite = GetComponent<SpriteRenderer>();
 
@@ -59,7 +68,15 @@ public class Afterimages : MonoBehaviour {
             SpriteRenderer imageSprite = afterImage.AddComponent<SpriteRenderer>();
             images.Add(afterImage.transform);
 
-            imageSprite.color = imageColor;
+            if (!useMulticolors)
+            {
+
+                imageSprite.color = imageColor;
+            }
+            else
+            {
+                imageSprite.color = multicolors[i];
+            }
             afterImage.gameObject.SetActive(false);
             image.imageInChain = i + 1;
             image.maxOffset = image.imageInChain * delayBetweenImages;
@@ -80,7 +97,8 @@ public class Afterimages : MonoBehaviour {
             case ImageState.ON:
                 {
                     imagePositions[index] = this.gameObject.transform.position;
-                    
+                    savedSprites[index] = sprite.sprite;
+
                     foreach (Transform t in images)
                     {
                         if (t.gameObject.activeSelf == false)
@@ -105,8 +123,14 @@ public class Afterimages : MonoBehaviour {
 
                         t.localScale = transform.localScale;
                         SpriteRenderer imageSprite = t.GetComponent<SpriteRenderer>();
-                        imageSprite.sprite = sprite.sprite;
-                        imageSprite.color = imageColor;
+                        if (!saveSprites)
+                        {
+                            imageSprite.sprite = sprite.sprite;
+                        }
+                        else
+                        {
+                            imageSprite.sprite = savedSprites[SubtractAndWrap(index, image.offset, positionsToSave)];
+                        }
 
                         if (image.offset < image.maxOffset) image.offset++;
                     }
@@ -140,7 +164,15 @@ public class Afterimages : MonoBehaviour {
                     }
 
                     t.localScale = transform.localScale;
-                    t.GetComponent<SpriteRenderer>().sprite = sprite.sprite;
+
+                    if (!saveSprites)
+                    {
+                        t.GetComponent<SpriteRenderer>().sprite = sprite.sprite;
+                    }
+                    else
+                    {
+                        t.GetComponent<SpriteRenderer>().sprite = savedSprites[SubtractAndWrap(index, image.offset, positionsToSave)];
+                    }
 
                     if (image.offset > 0) image.offset--;
 
