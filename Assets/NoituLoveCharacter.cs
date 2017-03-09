@@ -34,7 +34,8 @@ public class NoituLoveCharacter : MonoBehaviour {
 
     private CharacterController2D _controller;
     private BoxCollider2D _collider;
-
+    private SpriteRenderer _sprite;
+    private Afterimages _afterimages;
 
 
     private void Awake()
@@ -42,6 +43,8 @@ public class NoituLoveCharacter : MonoBehaviour {
         readInput = true;
         _controller = GetComponent<CharacterController2D>();
         _collider = GetComponent<BoxCollider2D>();
+        _sprite = GetComponent<SpriteRenderer>();
+        _afterimages = GetComponent<Afterimages>();
     }
 
     // Use this for initialization
@@ -56,10 +59,12 @@ public class NoituLoveCharacter : MonoBehaviour {
         {
             if (Input.GetAxis("Horizontal") < 0)
             {
+                _sprite.flipX = true;
                 velocity.x = runSpeed * -1;
             }
             else if (Input.GetAxis("Horizontal") > 0)
             {
+                _sprite.flipX = false;
                 velocity.x = runSpeed;
             }
             else
@@ -70,6 +75,7 @@ public class NoituLoveCharacter : MonoBehaviour {
 
         if (isDashing)
         {
+            _afterimages.StartImages();
             readInput = false;
             _disableGravity = true;
             Vector3 movementDirection = dashTarget.position - this.transform.position;
@@ -83,6 +89,7 @@ public class NoituLoveCharacter : MonoBehaviour {
                 readInput = true;
                 isDashing = false;
                 _disableGravity = false;
+                _afterimages.StopImages();
             }
         }
 
