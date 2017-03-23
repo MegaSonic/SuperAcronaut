@@ -14,6 +14,8 @@ public class NoituLoveCharacter : MonoBehaviour {
         RUNNING = 3
     }
 
+    public BoxCollider2D attackCollider;
+
     public NoituLoveCharacter.State charState;
 
 
@@ -22,6 +24,9 @@ public class NoituLoveCharacter : MonoBehaviour {
 
     public float gravity = -40;
     public float terminalVelocity = -12;
+    public int damage;
+    public float timeBetweenDamage;
+    public float attacksLastFor;
 
     public Vector3 velocity;
     public bool _disableGravity;
@@ -36,6 +41,11 @@ public class NoituLoveCharacter : MonoBehaviour {
     private BoxCollider2D _collider;
     private SpriteRenderer _sprite;
     private Afterimages _afterimages;
+    private Hitbox _hitbox;
+
+    private float attackTimer;
+    private float hitboxTimer;
+
 
 
     private void Awake()
@@ -45,6 +55,8 @@ public class NoituLoveCharacter : MonoBehaviour {
         _collider = GetComponent<BoxCollider2D>();
         _sprite = GetComponent<SpriteRenderer>();
         _afterimages = GetComponent<Afterimages>();
+        _hitbox = GetComponentInChildren<Hitbox>();
+        attackCollider.enabled = true;
     }
 
     // Use this for initialization
@@ -54,17 +66,20 @@ public class NoituLoveCharacter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        attackTimer += Time.deltaTime;
+        hitboxTimer += Time.deltaTime;
+        
 
         if (readInput)
         {
             if (Input.GetAxis("Horizontal") < 0)
             {
-                _sprite.flipX = true;
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x) * -1, transform.localScale.y, transform.localScale.z);
                 velocity.x = runSpeed * -1;
             }
             else if (Input.GetAxis("Horizontal") > 0)
             {
-                _sprite.flipX = false;
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
                 velocity.x = runSpeed;
             }
             else
@@ -75,21 +90,56 @@ public class NoituLoveCharacter : MonoBehaviour {
 
         if (isDashing)
         {
-            _afterimages.StartImages();
-            readInput = false;
-            _disableGravity = true;
-            Vector3 movementDirection = dashTarget.position - this.transform.position;
-            movementDirection = movementDirection.normalized;
-            movementDirection *= dashSpeed;
-            velocity = movementDirection;
-            velocity.z = 0f;
-
-            if ((dashTarget.position - transform.position).magnitude < distanceToDashTo)
+            if (dashTarget != null && (dashTarget.position - transform.position).magnitude > distanceToDashTo)
             {
-                readInput = true;
-                isDashing = false;
-                _disableGravity = false;
-                _afterimages.StopImages();
+                if (dashTarget.position.x > transform.position.x)
+                {
+                    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                }
+                else
+                {
+                    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x) * -1, transform.localScale.y, transform.localScale.z);
+                }
+
+
+                _afterimages.StartImages();
+                readInput = false;
+                _disableGravity = true;
+                Vector3 movementDirection = dashTarget.position - this.transform.position;
+                movementDirection = movementDirection.normalized;
+                movementDirection *= dashSpeed;
+                velocity = movementDirection;
+                velocity.z = 0f;
+
+            }
+            else
+            {
+
+                if (Input.GetMouseButton(0))
+                {
+                    velocity.x = 0;
+                    velocity.y = 0;
+
+                    if (hitboxTimer > timeBetweenDamage && !_hitbox.sendDamage)
+                    {
+                        attackTimer = 0;
+                        _hitbox.StartAttack();
+                    }
+
+                    if (_hitbox.sendDamage && attackTimer > attacksLastFor)
+                    {
+                        hitboxTimer = 0;
+                        _hitbox.EndAttack();
+                    }
+                }
+                else
+                {
+                    readInput = true;
+                    isDashing = false;
+                    _disableGravity = false;
+                    _afterimages.StopImages();
+                    _hitbox.EndAttack();
+                }
             }
         }
 
