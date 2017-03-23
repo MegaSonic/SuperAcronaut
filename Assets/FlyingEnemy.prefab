@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 50319313083777004}
   - component: {fileID: 114980359667399004}
   m_Layer: 13
-  m_Name: GroundedEnemy
+  m_Name: FlyingEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,14 +101,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b23eb3150bb1384ba6e53d6d42f023c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 5
-  maxHealth: 5
+  health: 3
+  maxHealth: 3
   healthBarLength: 30
   deathForce: 20
   gravity: -40
   isDead: 0
   velocity: {x: 0, y: 0, z: 0}
-  useGravity: 1
+  useGravity: 0
 --- !u!114 &114980359667399004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -187,6 +187,6 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: c168d8a8ba4cb8e4299ede80affa3e42, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.9724138, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0

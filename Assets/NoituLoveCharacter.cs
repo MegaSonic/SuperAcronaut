@@ -46,7 +46,7 @@ public class NoituLoveCharacter : MonoBehaviour {
     private float attackTimer;
     private float hitboxTimer;
 
-
+    public Vector3 lastGroundedPosition;
 
     private void Awake()
     {
@@ -69,6 +69,10 @@ public class NoituLoveCharacter : MonoBehaviour {
         attackTimer += Time.deltaTime;
         hitboxTimer += Time.deltaTime;
         
+        if (_controller.isGrounded)
+        {
+            lastGroundedPosition = this.transform.position;
+        }
 
         if (readInput)
         {
@@ -134,11 +138,7 @@ public class NoituLoveCharacter : MonoBehaviour {
                 }
                 else
                 {
-                    readInput = true;
-                    isDashing = false;
-                    _disableGravity = false;
-                    _afterimages.StopImages();
-                    _hitbox.EndAttack();
+                    StopDash();
                 }
             }
         }
@@ -156,4 +156,14 @@ public class NoituLoveCharacter : MonoBehaviour {
         _controller.move(velocity);
         velocity = _controller.velocity;
     }
+
+    public void StopDash()
+    {
+        readInput = true;
+        isDashing = false;
+        _disableGravity = false;
+        _afterimages.StopImages();
+        _hitbox.EndAttack();
+    }
 }
+

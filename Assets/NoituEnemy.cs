@@ -7,6 +7,10 @@ using Prime31;
 public class NoituEnemy : MonoBehaviour, IDamageable {
 
     public int health;
+    public int maxHealth;
+
+    public int healthBarLength;
+
     public int deathForce;
     public float gravity;
     public bool isDead;
@@ -15,6 +19,7 @@ public class NoituEnemy : MonoBehaviour, IDamageable {
 
     private CharacterController2D _controller;
     private Rigidbody2D _rigid;
+    private NoituLoveCharacter _player;
 
     public void Damage(int damage)
     {
@@ -29,8 +34,10 @@ public class NoituEnemy : MonoBehaviour, IDamageable {
 
     // Use this for initialization
     void Start () {
-		
-	}
+        _player = GameObject.FindGameObjectWithTag("Player").GetComponent<NoituLoveCharacter>();
+        maxHealth = health;
+
+    }
 
     private void Awake()
     {
@@ -53,6 +60,18 @@ public class NoituEnemy : MonoBehaviour, IDamageable {
     public void Die()
     {
         isDead = true;
-        Destroy(this.gameObject);
+
+        if (_player.dashTarget == this.gameObject.transform)
+        {
+            _player.StopDash();
+            _player.dashTarget = null;
+        }
+        useGravity = true;
+        this.GetComponent<Clickable>().enabled = false;
+        _controller.platformMask = LayerMask.GetMask("DeadEnemies");
+        velocity = UnityEngine.Random.onUnitSphere * deathForce;
+        _controller.velocity = velocity;
     }
 }
+
+
